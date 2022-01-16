@@ -1,0 +1,136 @@
+<div class="content-wrapper">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Thêm sách</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+                        <li class="breadcrumb-item"><a href="/books">Danh sách sách</a></li>
+                        <li class="breadcrumb-item active">Thêm sách</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+    <div class="row justify-content-center">
+        <div class="col-sm-8 mt-3">
+            <h4>Add book</h4>
+
+            <form id="fm-create-book" action="/books/add" method="POST" enctype="multipart/form-data">
+                <div class="form-row">
+                    <div class="form-group col-md-8">
+                        <label for="name">Tên:</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    <div class="form-group col-md-4" hidden>
+                        <label for="id">ID:</label>
+                        <input type="text" class="form-control" id="id" name="id">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <div class="form-group">
+                            <label for="author">Tác giả:</label>
+                            <select class="form-control" name="author" id="author" required>
+                                <option value="" disabled selected>Choose author</option>
+                                {{#each authors}}
+                                <option value="{{this._id}}">{{this.name}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        {{!-- <label for="category">Category:</label>
+                        <input type="text" class="form-control" id="category" name="category"> --}}
+                        <div class="form-group">
+                            <label for="category">Danh mục:</label>
+                            <select class="form-control" name="category" id="category" multiple>
+                                {{#each categories}}
+                                <option value="{{this._id}}">{{this.name}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="quantity">Số lượng:</label>
+                        <label id="quantity-message"></label>
+                        <input type="number" class="form-control" id="quantity" name="quantity" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="price">Giá:</label>
+                        <label id="price-message"></label>
+                        <input type="number" class="form-control" id="price" name="price" required>
+                    </div>
+                </div>
+                {{!-- <div class="form-group">
+                    <label for="image">Image url:</label>
+                    <input type="url" class="form-control" id="image" name="image">
+                </div> --}}
+                <div class="form-group">
+                    <label for="image">Ảnh:</label>
+                    <input type="file" class="form-control" id="image" name="image" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Mô tả</label>
+                    <input type="text" class="form-control" id="description" name="description"></input>
+                </div>
+                <button type="submit" class="btn btn-primary">Thêm</button></a>
+
+            </form>
+        </div>
+    </div>
+    <!-- /.card -->
+    {{!--
+</div> --}}
+{{!-- </div> --}}
+<hr />
+<div class="row">
+    <div class="col-sm-12">
+        <div class="preview-images"></div>
+    </div>
+</div>
+
+<script>
+    function verify(e) {
+
+    }
+    $(document).ready(function () {
+        console.log("ready");
+        $('#quantity').change(function () {
+            $('#quantity-message').text("");
+        });
+        $('#price').change(function () {
+            $('#price-message').text("");
+        });
+        $("form").submit(function (e) {
+            
+            console.log("verify...");
+            var name = $('#name').text();
+            name = name.trim();
+            var quantity = $('#quantity').val();
+            quantity = Number(quantity);
+            if (quantity < 0) {
+                $('#quantity-message').text("must be >= 0");
+
+                return e.preventDefault();
+            }
+            var price = $('#price').val();
+            price = Number(price);
+            if (price < 0) {
+                $('#price-message').text("must be >= 0");
+                console.log("no")
+                return e.preventDefault();
+            }
+            return true;
+        });
+        $('#fm-create-book').submit(verify(e));
+    })
+</script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
